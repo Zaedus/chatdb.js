@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ES2016",
+        "watch": true,
+        "module": "commonjs"
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
