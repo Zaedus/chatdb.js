@@ -1,9 +1,8 @@
 export interface Conversation {
     handles: Handle[],
     id: number,
-    roomName: string,
     displayName: string,
-    lastRead: Date,
+    lastRead: Date | null,
     identifier: string
 }
 export interface Handle {
@@ -11,4 +10,13 @@ export interface Handle {
     id: number,
     name: string,
     country: string
+}
+
+export interface Message {
+    handle: Handle,
+    text: string,
+    dateSent: Date,
+    id: number,
+    service: "iMessage" | "SMS",
+    sent: boolean
 }
