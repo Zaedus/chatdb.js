@@ -10,8 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("./app");
-const chat = new app_1.Chat("./chat.db");
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield chat.init();
-    //console.log(chat.json);
-}))();
+(function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        const chat = yield new app_1.Chat("./chat.db").init();
+        console.log(yield chat.getConversations());
+    });
+}());

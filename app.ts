@@ -2,13 +2,12 @@ import { Database, Statement } from "sqlite3";
 import { open, Database as DatabaseSqlite } from "sqlite";
 import { Conversation, Handle, Message, Attachment } from './types';
 import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow } from './db';
-import { writeFileSync } from "fs";
 
 export class Chat {
 
-    path: string;
-    db: DatabaseSqlite<Database, Statement>;
-    json: Conversation[];
+    public path: string;
+    public db: DatabaseSqlite<Database, Statement>;
+    public json: Conversation[];
 
     constructor(path?: string) {
         this.path = path || "~/Library/Messages/chat.db";
@@ -16,7 +15,7 @@ export class Chat {
         this.json = [];
     }
 
-    public async init(): Promise<void> {
+    public async init(): Promise<Chat> {
         this.db = await open({
             filename: this.path,
             driver: Database
@@ -77,6 +76,78 @@ export class Chat {
                 lastRead: this.dbDateToDate(row.last_read_message_timestamp)
             });
         }
+        return this;
+    }
+
+    public async getHandles(): Promise<Handle[]> {
+        const db = this.db;
+        const tableHandles: HandleTableRow[] = (await db.all("SELECT * FROM handle"));
+        let handles: Handle[] = [];
+
+        for (let handle of tableHandles) {
+            handles.push({
+                country: handle.country,
+                name: handle.id,
+                id: handle.ROWID,
+                service: handle.service
+            })
+        }
+        return handles;
+    }
+
+    public async getConversations(): Promise<Conversation[]> {
+        const db = this.db;
+        const tableChats: ChatTableRow[] = (await db.all("SELECT * FROM chat"));
+        let chats: Conversation[] = [];
+
+        for (let chat of tableChats) {
+            chats.push({
+                displayName: chat.display_name,
+                id: chat.ROWID,
+                identifier: chat.chat_identifier,
+                lastRead: this.dbDateToDate(chat.last_read_message_timestamp),
+            })
+        }
+        return chats;
+    }
+
+    public async getMessages() {
+        const db = this.db;
+        const handles = await this.getHandles();
+        const chatMessageMap = (await db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
+        let messages: Message[] = [];
+        
+        for (let messageID of chatMessageMap) {
+            const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
+            const attachments: Attachment[] = [];
+            const message: MessageTableRow = (await db.all(`SELECT * FROM message WHERE ROWID = ${messageID}`))[0];
+
+            for (let attachmentID of messageAttachmentMap) {
+                const attachment: AttachmentTableRow = (await db.all(`SELECT * FROM attachment WHERE ROWID = ${attachmentID}`))[0];
+                
+                attachments.push({
+                    filename: attachment.filename,
+                    id: attachment.ROWID,
+                    mime: attachment.mime_type,
+                    name: attachment.transfer_name,
+                    size: attachment.total_bytes
+                });
+            }
+
+            messages.push({
+                dateSent: this.dbDateToDate(message.date_delivered),
+                handle: handles.find(v => v.id == message.handle_id),
+                id: message.ROWID,
+                sent: message.is_sent == 1 ? true : false,
+                service: message.service,
+                text: message.text,
+                attachment: attachments
+            })
+        }
+    }
+
+    public close() {
+        return this.db.close();
     }
 
     private dbDateToDate(nano: number): Date {

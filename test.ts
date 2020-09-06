@@ -1,8 +1,7 @@
 import { Chat } from "./app";
 
-const chat = new Chat("./chat.db");
+(async function () {
+    const chat = await new Chat("./chat.db").init();
 
-(async () => {
-    await chat.init();
-    //console.log(chat.json);
-})();
+    console.log(await chat.getConversations())
+}());
