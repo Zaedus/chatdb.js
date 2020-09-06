@@ -2,7 +2,8 @@
     "compilerOptions": {
         "target": "ES2016",
         "watch": true,
-        "module": "commonjs"
+        "module": "commonjs",
+        "alwaysStrict": true
     },
     "exclude": [
         "node_modules",
