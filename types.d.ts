@@ -1,12 +1,13 @@
 export interface Conversation {
     handles: Handle[],
+    messages: Message[],
     id: number,
     displayName: string,
     lastRead: Date | null,
     identifier: string
 }
 export interface Handle {
-    service: "iMessage" | "SMS",
+    service: string,
     id: number,
     name: string,
     country: string
@@ -17,6 +18,15 @@ export interface Message {
     text: string,
     dateSent: Date,
     id: number,
-    service: "iMessage" | "SMS",
-    sent: boolean
+    service: string,
+    sent: boolean,
+    attachment: Attachment[]
+}
+
+export interface Attachment {
+    id: number,
+    filename: string,
+    mime: string,
+    name: string,
+    size: number
 }

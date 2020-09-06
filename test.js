@@ -13,5 +13,5 @@ const app_1 = require("./app");
 const chat = new app_1.Chat("./chat.db");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield chat.init();
-    console.log(chat.json);
+    //console.log(chat.json);
 }))();
