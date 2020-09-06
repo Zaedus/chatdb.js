@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/Zaedus/chatdb.js/issues"
   },
-  "homepage": "https://github.com/Zaedus/chatdb.js#readme"
+  "homepage": "https://github.com/Zaedus/chatdb.js#readme",
+  "dependencies": {
+    "@types/sqlite3": "^3.1.6",
+    "sqlite3": "^5.0.0"
+  }
 }
