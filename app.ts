@@ -144,6 +144,7 @@ export class Chat {
                 attachment: attachments
             })
         }
+        return messages;
     }
 
     public close() {

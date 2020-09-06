@@ -137,6 +137,7 @@ class Chat {
                     attachment: attachments
                 });
             }
+            return messages;
         });
     }
     close() {
