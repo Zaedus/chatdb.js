@@ -5,6 +5,9 @@ class Chat {
     constructor(path) {
         this.path = path || "~/Library/Messages/chat.db";
         this.db = new sqlite3_1.Database(this.path, (e) => console.error(e));
+        this.compute();
+    }
+    compute() {
     }
 }
 exports.Chat = Chat;
