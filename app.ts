@@ -77,7 +77,6 @@ export class Chat {
                 lastRead: this.dbDateToDate(row.last_read_message_timestamp)
             });
         }
-        writeFileSync("out.json", JSON.stringify(this.json));
     }
 
     private dbDateToDate(nano: number): Date {

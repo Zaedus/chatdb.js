@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqlite3_1 = require("sqlite3");
 const sqlite_1 = require("sqlite");
-const fs_1 = require("fs");
 class Chat {
     constructor(path) {
         this.path = path || "~/Library/Messages/chat.db";
@@ -73,7 +72,6 @@ class Chat {
                     lastRead: this.dbDateToDate(row.last_read_message_timestamp)
                 });
             }
-            fs_1.writeFileSync("out.json", JSON.stringify(this.json));
         });
     }
     dbDateToDate(nano) {
