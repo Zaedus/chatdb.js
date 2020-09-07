@@ -108,6 +108,6 @@ dist
 
 # Custom
 
-chat.db
+chat.*
 test.*
 docs/
