@@ -111,11 +111,11 @@ export class Chat {
         const tableHandles: HandleTableRow[] = (await db.all("SELECT * FROM handle"));
         let handles: Handle[] = [];
 
-        const endValue = max ? (tableHandles.length - 1) - (max - 1) : tableHandles.length - 1;
+        const endValue = max ? reverse ? (tableHandles.length) - (max) : max : tableHandles.length;
         const startValue = reverse ? tableHandles.length - 1 : 0;
         const change = reverse ? -1 : 1;
 
-        for (let handleIndex = startValue; (reverse ? handleIndex >= endValue : handleIndex < endValue); handleIndex += change) {
+        for (let handleIndex = startValue; (reverse ? handleIndex > endValue - 1 : handleIndex < endValue); handleIndex += change) {
             let handle = tableHandles[handleIndex];
             handles.push({
                 country: handle.country,
@@ -132,11 +132,11 @@ export class Chat {
         const tableChats: ChatTableRow[] = (await db.all("SELECT * FROM chat"));
         let chats: Conversation[] = [];
 
-        const endValue = max ? (tableChats.length - 1) - (max - 1) : tableChats.length - 1;
+        const endValue = max ? reverse ? (tableChats.length) - (max) : max : tableChats.length;
         const startValue = reverse ? tableChats.length - 1 : 0;
         const change = reverse ? -1 : 1;
 
-        for (let chatIndex = startValue; (reverse ? chatIndex >= endValue : chatIndex < endValue); chatIndex += change) {
+        for (let chatIndex = startValue; (reverse ? chatIndex > endValue - 1 : chatIndex < endValue); chatIndex += change) {
             let chat = tableChats[chatIndex];
             chats.push({
                 displayName: chat.display_name,
@@ -154,11 +154,11 @@ export class Chat {
         const chatMessageMap = (await db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
         let messages: Message[] = [];
 
-        const endValue = max ? (chatMessageMap.length - 1) - (max - 1) : chatMessageMap.length - 1;
+        const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
         const startValue = reverse ? chatMessageMap.length - 1 : 0;
         const change = reverse ? -1 : 1;
 
-        for (let messageIndex = startValue; (reverse ? messageIndex >= endValue : messageIndex < endValue); messageIndex += change) {
+        for (let messageIndex = startValue; (reverse ? messageIndex > endValue - 1 : messageIndex < endValue); messageIndex += change) {
             const messageID = chatMessageMap[messageIndex];
             const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
             const attachments: Attachment[] = [];
