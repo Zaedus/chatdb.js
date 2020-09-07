@@ -9,11 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Chat = void 0;
 const sqlite3_1 = require("sqlite3");
 const sqlite_1 = require("sqlite");
+const os = require("os");
+const path_1 = require("path");
 class Chat {
     constructor(path) {
-        this.path = path || "~/Library/Messages/chat.db";
+        this.path = path || path_1.join(os.homedir(), "/Library/Messages/chat.db");
         this.db = null;
         this.json = [];
     }
