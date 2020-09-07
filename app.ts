@@ -61,6 +61,7 @@ export class Chat {
 
                 messages.push({
                     dateSent: this.dbDateToDate(message.date_delivered),
+                    date: this.dbDateToDate(message.date),
                     handle: handles.find(v => v.id == message.handle_id),
                     id: message.ROWID,
                     sent: message.is_sent == 1 ? true : false,
@@ -138,6 +139,7 @@ export class Chat {
 
             messages.push({
                 dateSent: this.dbDateToDate(message.date_delivered),
+                date: this.dbDateToDate(message.date),
                 handle: handles.find(v => v.id == message.handle_id),
                 id: message.ROWID,
                 sent: message.is_sent == 1 ? true : false,

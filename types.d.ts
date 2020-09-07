@@ -16,6 +16,7 @@ export interface Handle {
 export interface Message {
     handle:     Handle,
     text:       string,
+    date:       Date,
     dateSent:   Date,
     id:         number,
     service:    string,
