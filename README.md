@@ -23,6 +23,31 @@ const { Chat } = require('chatdb.js');
 }())
 ```
 
+## Examples
+
+### Simple Message Logger
+
+```js
+const { Chat } = require('chatdb.js');
+const fs = require('fs');
+
+(async function() {
+    const chat = await new Chat().init(); // Initialize Client
+    const lastId = 0;
+    // Declare loop
+    async function loop() {
+        const msg = (await chat.getMessages(1, true))[0]; // Get the most recent message
+
+        if(msg.id != lastId) { // Check if the most recent message id changed
+            lastId = msg.id;
+            console.log(`${msg.isFromMe ? "Me" : msg.handle.name}: ${msg.text}`); // Format and log the message
+        }
+    }
+
+    setInterval(loop, 1000); // Start loop
+}());
+```
+
 ## Documentation
 
 ### Constructors
