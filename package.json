@@ -1,6 +1,6 @@
 {
   "name": "chatdb.js",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/Zaedus/chatdb.js.git"
   },
-  "keywords": [],
+  "keywords": ["imessage", "messages", "SMS", "mac", "osx", "apple", "apple imessage", "chat.db", "chat db", "chat", "chatdb", "chatdb.js"],
   "author": "",
   "license": "ISC",
   "bugs": {
