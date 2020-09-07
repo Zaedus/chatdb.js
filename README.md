@@ -43,6 +43,7 @@ const { Chat } = require('chatdb.js');
 * [getHandles](_app_.chat.md#gethandles)
 * [getMessages](_app_.chat.md#getmessages)
 * [init](_app_.chat.md#init)
+* [parse](_app_.chat.md#parse)
 
 ## Constructors
 
@@ -50,7 +51,7 @@ const { Chat } = require('chatdb.js');
 
 \+ **new Chat**(`path?`: string): *[Chat](_app_.chat.md)*
 
-*Defined in [app.ts:10](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L10)*
+*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L12)*
 
 **Parameters:**
 
@@ -66,7 +67,7 @@ Name | Type |
 
 • **db**: *DatabaseSqlite‹Database, Statement›*
 
-*Defined in [app.ts:9](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L9)*
+*Defined in [app.ts:11](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L11)*
 
 ___
 
@@ -74,7 +75,7 @@ ___
 
 • **json**: *Conversation[]*
 
-*Defined in [app.ts:10](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L10)*
+*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L12)*
 
 ___
 
@@ -82,7 +83,7 @@ ___
 
 • **path**: *string*
 
-*Defined in [app.ts:8](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L8)*
+*Defined in [app.ts:10](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L10)*
 
 ## Methods
 
@@ -90,7 +91,7 @@ ___
 
 ▸ **close**(): *Promise‹void›*
 
-*Defined in [app.ts:150](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L150)*
+*Defined in [app.ts:174](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L174)*
 
 **Returns:** *Promise‹void›*
 
@@ -100,7 +101,7 @@ ___
 
 ▸ **dbDateToDate**(`nano`: number): *Date*
 
-*Defined in [app.ts:154](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L154)*
+*Defined in [app.ts:178](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L178)*
 
 **Parameters:**
 
@@ -114,9 +115,16 @@ ___
 
 ###  getConversations
 
-▸ **getConversations**(): *Promise‹Conversation[]›*
+▸ **getConversations**(`max?`: number, `reverse?`: boolean): *Promise‹Conversation[]›*
 
-*Defined in [app.ts:98](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L98)*
+*Defined in [app.ts:111](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L111)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`max?` | number |
+`reverse?` | boolean |
 
 **Returns:** *Promise‹Conversation[]›*
 
@@ -124,9 +132,16 @@ ___
 
 ###  getHandles
 
-▸ **getHandles**(): *Promise‹Handle[]›*
+▸ **getHandles**(`max?`: number, `reverse?`: boolean): *Promise‹Handle[]›*
 
-*Defined in [app.ts:82](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L82)*
+*Defined in [app.ts:90](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L90)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`max?` | number |
+`reverse?` | boolean |
 
 **Returns:** *Promise‹Handle[]›*
 
@@ -134,9 +149,16 @@ ___
 
 ###  getMessages
 
-▸ **getMessages**(): *Promise‹Message[]›*
+▸ **getMessages**(`max?`: number, `reverse?`: boolean): *Promise‹Message[]›*
 
-*Defined in [app.ts:114](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L114)*
+*Defined in [app.ts:132](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L132)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`max?` | number |
+`reverse?` | boolean |
 
 **Returns:** *Promise‹Message[]›*
 
@@ -146,6 +168,16 @@ ___
 
 ▸ **init**(): *Promise‹[Chat](_app_.chat.md)›*
 
-*Defined in [app.ts:18](https://github.com/Zaedus/chatdb.js/blob/40cd694/app.ts#L18)*
+*Defined in [app.ts:19](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L19)*
 
 **Returns:** *Promise‹[Chat](_app_.chat.md)›*
+
+___
+
+###  parse
+
+▸ **parse**(): *Promise‹Conversation[]›*
+
+*Defined in [app.ts:28](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L28)*
+
+**Returns:** *Promise‹Conversation[]›*
