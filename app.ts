@@ -2,6 +2,8 @@ import { Database, Statement } from "sqlite3";
 import { open, Database as DatabaseSqlite } from "sqlite";
 import { Conversation, Handle, Message, Attachment } from './types';
 import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow } from './db';
+import * as os from "os";
+import { join } from "path";
 
 export class Chat {
 
@@ -10,7 +12,7 @@ export class Chat {
     public json: Conversation[];
 
     constructor(path?: string) {
-        this.path = path || "~/Library/Messages/chat.db";
+        this.path = path || join(os.homedir(), "/Library/Messages/chat.db");
         this.db = null;
         this.json = [];
     }
