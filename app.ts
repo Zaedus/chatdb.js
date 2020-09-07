@@ -82,12 +82,17 @@ export class Chat {
         return this;
     }
 
-    public async getHandles(): Promise<Handle[]> {
+    public async getHandles(max?: number, reverse?: boolean): Promise<Handle[]> {
         const db = this.db;
         const tableHandles: HandleTableRow[] = (await db.all("SELECT * FROM handle"));
         let handles: Handle[] = [];
 
-        for (let handle of tableHandles) {
+        const endValue = max ? max : tableHandles.length - 1;
+        const startValue = reverse ? max : 0;
+        const change = reverse ? -1 : 1;
+
+        for (let handleIndex = startValue; (reverse ? handleIndex >= 0 : handleIndex < endValue); handleIndex += change) {
+            let handle = tableHandles[handleIndex];
             handles.push({
                 country: handle.country,
                 name: handle.id,
@@ -98,12 +103,17 @@ export class Chat {
         return handles;
     }
 
-    public async getConversations(): Promise<Conversation[]> {
+    public async getConversations(max?: number, reverse?: boolean): Promise<Conversation[]> {
         const db = this.db;
         const tableChats: ChatTableRow[] = (await db.all("SELECT * FROM chat"));
         let chats: Conversation[] = [];
 
-        for (let chat of tableChats) {
+        const endValue = max ? max : tableChats.length - 1;
+        const startValue = reverse ? max : 0;
+        const change = reverse ? -1 : 1;
+
+        for (let chatIndex = startValue; (reverse ? chatIndex >= 0 : chatIndex < endValue); chatIndex += change) {
+            let chat = tableChats[chatIndex];
             chats.push({
                 displayName: chat.display_name,
                 id: chat.ROWID,
@@ -114,13 +124,18 @@ export class Chat {
         return chats;
     }
 
-    public async getMessages() {
+    public async getMessages(max?: number, reverse?: boolean) {
         const db = this.db;
         const handles = await this.getHandles();
         const chatMessageMap = (await db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
         let messages: Message[] = [];
-        
-        for (let messageID of chatMessageMap) {
+
+        const endValue = max ? max : chatMessageMap.length - 1;
+        const startValue = reverse ? max : 0;
+        const change = reverse ? -1 : 1;
+
+        for (let messageIndex = startValue; (reverse ? messageIndex >= 0 : messageIndex < endValue); messageIndex += change) {
+            const messageID = chatMessageMap[messageIndex];
             const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
             const attachments: Attachment[] = [];
             const message: MessageTableRow = (await db.all(`SELECT * FROM message WHERE ROWID = ${messageID}`))[0];
