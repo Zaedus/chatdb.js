@@ -18,7 +18,6 @@ class Chat {
     constructor(path) {
         this.path = path || path_1.join(os.homedir(), "/Library/Messages/chat.db");
         this.db = null;
-        this.json = [];
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -26,7 +25,13 @@ class Chat {
                 filename: this.path,
                 driver: sqlite3_1.Database
             });
+            return this;
+        });
+    }
+    parse() {
+        return __awaiter(this, void 0, void 0, function* () {
             const db = this.db;
+            let conversations = [];
             const chat = yield db.all("SELECT * FROM chat");
             for (let row of chat) {
                 let handles = [];
@@ -67,7 +72,7 @@ class Chat {
                         attachment: attachments
                     });
                 }
-                this.json.push({
+                conversations.push({
                     displayName: row.display_name,
                     handles: handles,
                     messages: messages,
@@ -76,7 +81,7 @@ class Chat {
                     lastRead: this.dbDateToDate(row.last_read_message_timestamp)
                 });
             }
-            return this;
+            return conversations;
         });
     }
     getHandles(max, reverse) {
@@ -84,10 +89,10 @@ class Chat {
             const db = this.db;
             const tableHandles = (yield db.all("SELECT * FROM handle"));
             let handles = [];
-            const endValue = max ? max : tableHandles.length - 1;
-            const startValue = reverse ? max : 0;
+            const endValue = max ? (tableHandles.length - 1) - (max - 1) : tableHandles.length - 1;
+            const startValue = reverse ? tableHandles.length - 1 : 0;
             const change = reverse ? -1 : 1;
-            for (let handleIndex = startValue; (reverse ? handleIndex >= 0 : handleIndex < endValue); handleIndex += change) {
+            for (let handleIndex = startValue; (reverse ? handleIndex >= endValue : handleIndex < endValue); handleIndex += change) {
                 let handle = tableHandles[handleIndex];
                 handles.push({
                     country: handle.country,
@@ -104,10 +109,10 @@ class Chat {
             const db = this.db;
             const tableChats = (yield db.all("SELECT * FROM chat"));
             let chats = [];
-            const endValue = max ? max : tableChats.length - 1;
-            const startValue = reverse ? max : 0;
+            const endValue = max ? (tableChats.length - 1) - (max - 1) : tableChats.length - 1;
+            const startValue = reverse ? tableChats.length - 1 : 0;
             const change = reverse ? -1 : 1;
-            for (let chatIndex = startValue; (reverse ? chatIndex >= 0 : chatIndex < endValue); chatIndex += change) {
+            for (let chatIndex = startValue; (reverse ? chatIndex >= endValue : chatIndex < endValue); chatIndex += change) {
                 let chat = tableChats[chatIndex];
                 chats.push({
                     displayName: chat.display_name,
@@ -125,10 +130,10 @@ class Chat {
             const handles = yield this.getHandles();
             const chatMessageMap = (yield db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
             let messages = [];
-            const endValue = max ? max : chatMessageMap.length - 1;
-            const startValue = reverse ? max : 0;
+            const endValue = max ? (chatMessageMap.length - 1) - (max - 1) : chatMessageMap.length - 1;
+            const startValue = reverse ? chatMessageMap.length - 1 : 0;
             const change = reverse ? -1 : 1;
-            for (let messageIndex = startValue; (reverse ? messageIndex >= 0 : messageIndex < endValue); messageIndex += change) {
+            for (let messageIndex = startValue; (reverse ? messageIndex >= endValue : messageIndex < endValue); messageIndex += change) {
                 const messageID = chatMessageMap[messageIndex];
                 const messageAttachmentMap = (yield db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
                 const attachments = [];
