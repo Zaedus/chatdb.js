@@ -52,29 +52,29 @@ const fs = require('fs');
 
 ### Constructors
 
-* [constructor](_app_.chat.md#constructor)
+* [constructor](#constructor)
 
 ### Properties
 
-* [db](_app_.chat.md#db)
-* [json](_app_.chat.md#json)
-* [path](_app_.chat.md#path)
+* [db](#db)
+* [json](#json)
+* [path](#path)
 
 ### Methods
 
-* [close](_app_.chat.md#close)
-* [dbDateToDate](_app_.chat.md#private-dbdatetodate)
-* [getConversations](_app_.chat.md#getconversations)
-* [getHandles](_app_.chat.md#gethandles)
-* [getMessages](_app_.chat.md#getmessages)
-* [init](_app_.chat.md#init)
-* [parse](_app_.chat.md#parse)
+* [close](#close)
+* [dbDateToDate](#private-dbdatetodate)
+* [getConversations](#getconversations)
+* [getHandles](#gethandles)
+* [getMessages](#getmessages)
+* [init](#init)
+* [parse](#parse)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new Chat**(`path?`: string): *[Chat](_app_.chat.md)*
+\+ **new Chat**(`path?`: string): *[Chat]()*
 
 *Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L12)*
 
@@ -84,7 +84,7 @@ Name | Type |
 ------ | ------ |
 `path?` | string |
 
-**Returns:** *[Chat](_app_.chat.md)*
+**Returns:** *[Chat]()*
 
 ## Properties
 
@@ -191,11 +191,11 @@ ___
 
 ###  init
 
-▸ **init**(): *Promise‹[Chat](_app_.chat.md)›*
+▸ **init**(): *Promise‹[Chat]()›*
 
 *Defined in [app.ts:19](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L19)*
 
-**Returns:** *Promise‹[Chat](_app_.chat.md)›*
+**Returns:** *Promise‹[Chat]()›*
 
 ___
 
