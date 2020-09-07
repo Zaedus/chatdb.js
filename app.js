@@ -66,10 +66,29 @@ class Chat {
                         date: this.dbDateToDate(message.date),
                         handle: handles.find(v => v.id == message.handle_id),
                         id: message.ROWID,
-                        sent: message.is_sent == 1 ? true : false,
                         service: message.service,
                         text: message.text,
-                        attachment: attachments
+                        attachment: attachments,
+                        isSent: message.is_sent == 1 ? true : false,
+                        cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
+                        dataDetected: message.was_data_detected == 1 ? true : false,
+                        hasDDResults: message.has_dd_results == 1 ? true : false,
+                        isArchive: message.is_archive == 1 ? true : false,
+                        isAudioMessage: message.is_audio_message == 1 ? true : false,
+                        isAutoReply: message.is_auto_reply == 1 ? true : false,
+                        isDelayed: message.is_delayed == 1 ? true : false,
+                        isDelivered: message.is_delivered == 1 ? true : false,
+                        isEmote: message.is_emote == 1 ? true : false,
+                        isEmpty: message.is_empty == 1 ? true : false,
+                        isFinished: message.is_finished == 1 ? true : false,
+                        isForward: message.is_finished == 1 ? true : false,
+                        isFromMe: message.is_from_me == 1 ? true : false,
+                        isPrepared: message.is_prepared == 1 ? true : false,
+                        isRead: message.is_read == 1 ? true : false,
+                        isServiceMessage: message.is_service_message == 1 ? true : false,
+                        isSpam: message.is_spam == 1 ? true : false,
+                        isSystemMessage: message.is_system_message == 1 ? true : false,
+                        wasDowngraded: message.was_downgraded == 1 ? true : false
                     });
                 }
                 conversations.push({
@@ -153,10 +172,29 @@ class Chat {
                     date: this.dbDateToDate(message.date),
                     handle: handles.find(v => v.id == message.handle_id),
                     id: message.ROWID,
-                    sent: message.is_sent == 1 ? true : false,
                     service: message.service,
                     text: message.text,
-                    attachment: attachments
+                    attachment: attachments,
+                    isSent: message.is_sent == 1 ? true : false,
+                    cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
+                    dataDetected: message.was_data_detected == 1 ? true : false,
+                    hasDDResults: message.has_dd_results == 1 ? true : false,
+                    isArchive: message.is_archive == 1 ? true : false,
+                    isAudioMessage: message.is_audio_message == 1 ? true : false,
+                    isAutoReply: message.is_auto_reply == 1 ? true : false,
+                    isDelayed: message.is_delayed == 1 ? true : false,
+                    isDelivered: message.is_delivered == 1 ? true : false,
+                    isEmote: message.is_emote == 1 ? true : false,
+                    isEmpty: message.is_empty == 1 ? true : false,
+                    isFinished: message.is_finished == 1 ? true : false,
+                    isForward: message.is_finished == 1 ? true : false,
+                    isFromMe: message.is_from_me == 1 ? true : false,
+                    isPrepared: message.is_prepared == 1 ? true : false,
+                    isRead: message.is_read == 1 ? true : false,
+                    isServiceMessage: message.is_service_message == 1 ? true : false,
+                    isSpam: message.is_spam == 1 ? true : false,
+                    isSystemMessage: message.is_system_message == 1 ? true : false,
+                    wasDowngraded: message.was_downgraded == 1 ? true : false
                 });
             }
             return messages;

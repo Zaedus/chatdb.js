@@ -21,7 +21,7 @@ export class Chat {
             filename: this.path,
             driver: Database
         });
-        
+
         return this;
     }
 
@@ -32,13 +32,13 @@ export class Chat {
         const chat: ChatTableRow[] = await db.all("SELECT * FROM chat");
 
         for (let row of chat) {
-            
-            let handles:  Handle[]  = [];
+
+            let handles: Handle[] = [];
             let messages: Message[] = [];
 
             const chatHandleMap = (await db.all(`SELECT handle_id FROM chat_handle_join WHERE chat_id = ${row.ROWID}`)).map(v => v.handle_id);
             for (let handleID of chatHandleMap) {
-                const handle : HandleTableRow = (await db.get(`SELECT * FROM handle WHERE ROWID = ${handleID}`));
+                const handle: HandleTableRow = (await db.get(`SELECT * FROM handle WHERE ROWID = ${handleID}`));
                 handles.push({
                     country: handle.country,
                     id: handle.ROWID,
@@ -54,7 +54,7 @@ export class Chat {
 
                 for (let attachmentID of messageAttachmentMap) {
                     const attachment: AttachmentTableRow = (await db.all(`SELECT * FROM attachment WHERE ROWID = ${attachmentID}`))[0];
-                    
+
                     attachments.push({
                         filename: attachment.filename,
                         id: attachment.ROWID,
@@ -69,10 +69,29 @@ export class Chat {
                     date: this.dbDateToDate(message.date),
                     handle: handles.find(v => v.id == message.handle_id),
                     id: message.ROWID,
-                    sent: message.is_sent == 1 ? true : false,
                     service: message.service,
                     text: message.text,
-                    attachment: attachments
+                    attachment: attachments,
+                    isSent: message.is_sent == 1 ? true : false,
+                    cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
+                    dataDetected: message.was_data_detected == 1 ? true : false,
+                    hasDDResults: message.has_dd_results == 1 ? true : false,
+                    isArchive: message.is_archive == 1 ? true : false,
+                    isAudioMessage: message.is_audio_message == 1 ? true : false,
+                    isAutoReply: message.is_auto_reply == 1 ? true : false,
+                    isDelayed: message.is_delayed == 1 ? true : false,
+                    isDelivered: message.is_delivered == 1 ? true : false,
+                    isEmote: message.is_emote == 1 ? true : false,
+                    isEmpty: message.is_empty == 1 ? true : false,
+                    isFinished: message.is_finished == 1 ? true : false,
+                    isForward: message.is_finished == 1 ? true : false,
+                    isFromMe: message.is_from_me == 1 ? true : false,
+                    isPrepared: message.is_prepared == 1 ? true : false,
+                    isRead: message.is_read == 1 ? true : false,
+                    isServiceMessage: message.is_service_message == 1 ? true : false,
+                    isSpam: message.is_spam == 1 ? true : false,
+                    isSystemMessage: message.is_system_message == 1 ? true : false,
+                    wasDowngraded: message.was_downgraded == 1 ? true : false
                 })
             }
             conversations.push({
@@ -147,7 +166,7 @@ export class Chat {
 
             for (let attachmentID of messageAttachmentMap) {
                 const attachment: AttachmentTableRow = (await db.all(`SELECT * FROM attachment WHERE ROWID = ${attachmentID}`))[0];
-                
+
                 attachments.push({
                     filename: attachment.filename,
                     id: attachment.ROWID,
@@ -162,10 +181,29 @@ export class Chat {
                 date: this.dbDateToDate(message.date),
                 handle: handles.find(v => v.id == message.handle_id),
                 id: message.ROWID,
-                sent: message.is_sent == 1 ? true : false,
                 service: message.service,
                 text: message.text,
-                attachment: attachments
+                attachment: attachments,
+                isSent: message.is_sent == 1 ? true : false,
+                cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
+                dataDetected: message.was_data_detected == 1 ? true : false,
+                hasDDResults: message.has_dd_results == 1 ? true : false,
+                isArchive: message.is_archive == 1 ? true : false,
+                isAudioMessage: message.is_audio_message == 1 ? true : false,
+                isAutoReply: message.is_auto_reply == 1 ? true : false,
+                isDelayed: message.is_delayed == 1 ? true : false,
+                isDelivered: message.is_delivered == 1 ? true : false,
+                isEmote: message.is_emote == 1 ? true : false,
+                isEmpty: message.is_empty == 1 ? true : false,
+                isFinished: message.is_finished == 1 ? true : false,
+                isForward: message.is_finished == 1 ? true : false,
+                isFromMe: message.is_from_me == 1 ? true : false,
+                isPrepared: message.is_prepared == 1 ? true : false,
+                isRead: message.is_read == 1 ? true : false,
+                isServiceMessage: message.is_service_message == 1 ? true : false,
+                isSpam: message.is_spam == 1 ? true : false,
+                isSystemMessage: message.is_system_message == 1 ? true : false,
+                wasDowngraded: message.was_downgraded == 1 ? true : false
             })
         }
         return messages;
@@ -176,6 +214,6 @@ export class Chat {
     }
 
     private dbDateToDate(nano: number): Date {
-        return nano == 0 ? null : new Date(nano/1000000 + (978307200000));
+        return nano == 0 ? null : new Date(nano / 1000000 + (978307200000));
     }
 }
