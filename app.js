@@ -200,6 +200,21 @@ class Chat {
             return messages;
         });
     }
+    getConversationCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.db.get("SELECT COUNT(*) FROM chat"))['COUNT(*)'];
+        });
+    }
+    getHandleCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.db.get("SELECT COUNT(*) FROM handle"))['COUNT(*)'];
+        });
+    }
+    getMessageCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.db.get("SELECT COUNT(*) FROM message"))['COUNT(*)'];
+        });
+    }
     close() {
         return this.db.close();
     }

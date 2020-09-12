@@ -209,6 +209,18 @@ export class Chat {
         return messages;
     }
 
+    public async getConversationCount() {
+        return (await this.db.get("SELECT COUNT(*) FROM chat"))['COUNT(*)'];
+    }
+
+    public async getHandleCount() {
+        return (await this.db.get("SELECT COUNT(*) FROM handle"))['COUNT(*)'];
+    }
+
+    public async getMessageCount() {
+        return (await this.db.get("SELECT COUNT(*) FROM message"))['COUNT(*)'];
+    }
+
     public close() {
         return this.db.close();
     }
