@@ -10,7 +10,8 @@ export interface Handle {
     service:    string,
     id:         number,
     name:       string,
-    country:    string
+    country:    string,
+    conversationIds: number[]
 }
 
 export interface Message {

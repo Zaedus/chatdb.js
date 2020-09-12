@@ -142,3 +142,8 @@ interface ChatMessageJoinTable {
     message_id: number,
     message_date: number
 }
+
+interface ChatHandleJoinTable {
+    chat_id: number,
+    handle_id: number
+}
