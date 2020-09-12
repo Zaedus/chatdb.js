@@ -1,4 +1,5 @@
 export interface Conversation {
+    guid:           string,
     handles?:       Handle[],
     messages?:      Message[],
     id:             number,

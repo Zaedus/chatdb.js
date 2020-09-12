@@ -103,7 +103,8 @@ export class Chat {
                 messages: messages,
                 id: row.ROWID,
                 identifier: row.chat_identifier,
-                lastRead: this.dbDateToDate(row.last_read_message_timestamp)
+                lastRead: this.dbDateToDate(row.last_read_message_timestamp),
+                guid: row.guid
             });
         }
         return conversations;
@@ -148,6 +149,7 @@ export class Chat {
                 id: chat.ROWID,
                 identifier: chat.chat_identifier,
                 lastRead: this.dbDateToDate(chat.last_read_message_timestamp),
+                guid: chat.guid
             })
         }
         return chats;
