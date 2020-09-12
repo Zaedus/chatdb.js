@@ -14,7 +14,8 @@ export interface Handle {
 }
 
 export interface Message {
-    handle:     Handle,
+    handle: Handle,
+    conversationId: number,
     text:       string,
     date:       Date,
     dateSent:   Date,

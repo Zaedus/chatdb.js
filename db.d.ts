@@ -136,3 +136,9 @@ export interface AttachmentTableRow {
     sr_ck_server_change_token_blob: Buffer;
     sr_ck_record_id: string;
 }
+
+interface ChatMessageJoinTable {
+    chat_id: number,
+    message_id: number,
+    message_date: number
+}
