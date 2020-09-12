@@ -1,7 +1,7 @@
 import { Database, Statement } from "sqlite3";
 import { open, Database as DatabaseSqlite } from "sqlite";
 import { Conversation, Handle, Message, Attachment } from './types';
-import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow } from './db';
+import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow, ChatMessageJoinTable } from './db';
 import * as os from "os";
 import { join } from "path";
 
@@ -35,8 +35,8 @@ export class Chat {
 
             let handles: Handle[] = [];
             let messages: Message[] = [];
-
-            const chatHandleMap = (await db.all(`SELECT handle_id FROM chat_handle_join WHERE chat_id = ${row.ROWID}`)).map(v => v.handle_id);
+            const chatToMessage = await db.all(`SELECT handle_id FROM chat_handle_join WHERE chat_id = ${row.ROWID}`);
+            const chatHandleMap = chatToMessage.map(v => v.handle_id);
             for (let handleID of chatHandleMap) {
                 const handle: HandleTableRow = (await db.get(`SELECT * FROM handle WHERE ROWID = ${handleID}`));
                 handles.push({
@@ -68,6 +68,7 @@ export class Chat {
                     dateSent: this.dbDateToDate(message.date_delivered),
                     date: this.dbDateToDate(message.date),
                     handle: handles.find(v => v.id == message.handle_id),
+                    conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
                     id: message.ROWID,
                     service: message.service,
                     text: message.text,
@@ -151,7 +152,8 @@ export class Chat {
     public async getMessages(max?: number, reverse?: boolean) {
         const db = this.db;
         const handles = await this.getHandles();
-        const chatMessageMap = (await db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
+        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id FROM chat_message_join`)
+        const chatMessageMap = chatToMessage.map(v => v.message_id);
         let messages: Message[] = [];
 
         const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
@@ -180,6 +182,7 @@ export class Chat {
                 dateSent: this.dbDateToDate(message.date_delivered),
                 date: this.dbDateToDate(message.date),
                 handle: handles.find(v => v.id == message.handle_id),
+                conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
                 id: message.ROWID,
                 service: message.service,
                 text: message.text,
