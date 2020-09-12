@@ -1,7 +1,7 @@
 import { Database, Statement } from "sqlite3";
 import { open, Database as DatabaseSqlite } from "sqlite";
 import { Conversation, Handle, Message, Attachment } from './types';
-import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow, ChatMessageJoinTable } from './db';
+import { ChatTableRow, HandleTableRow, MessageTableRow, AttachmentTableRow, ChatMessageJoinTable, ChatHandleJoinTable } from './db';
 import * as os from "os";
 import { join } from "path";
 
@@ -39,11 +39,13 @@ export class Chat {
             const chatHandleMap = chatToMessage.map(v => v.handle_id);
             for (let handleID of chatHandleMap) {
                 const handle: HandleTableRow = (await db.get(`SELECT * FROM handle WHERE ROWID = ${handleID}`));
+                const chatHandleJoin: ChatHandleJoinTable[] = (await db.all(`SELECT * FROM chat_handle_join WHERE handle_id = ${handleID}`));
                 handles.push({
                     country: handle.country,
                     id: handle.ROWID,
                     name: handle.id,
-                    service: handle.service
+                    service: handle.service,
+                    conversationIds: chatHandleJoin.map(v => v.chat_id)
                 });
             }
             const chatMessageMap = (await db.all(`SELECT message_id FROM chat_message_join WHERE chat_id = ${row.ROWID}`)).map(v => v.message_id);
@@ -118,11 +120,13 @@ export class Chat {
 
         for (let handleIndex = startValue; (reverse ? handleIndex > endValue - 1 : handleIndex < endValue); handleIndex += change) {
             let handle = tableHandles[handleIndex];
+            const chatHandleJoin: ChatHandleJoinTable[] = (await db.all(`SELECT * FROM chat_handle_join WHERE handle_id = ${handleIndex}`));
             handles.push({
                 country: handle.country,
                 name: handle.id,
                 id: handle.ROWID,
-                service: handle.service
+                service: handle.service,
+                conversationIds: chatHandleJoin.map(v => v.chat_id)
             })
         }
         return handles;

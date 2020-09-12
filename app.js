@@ -36,14 +36,17 @@ class Chat {
             for (let row of chat) {
                 let handles = [];
                 let messages = [];
-                const chatHandleMap = (yield db.all(`SELECT handle_id FROM chat_handle_join WHERE chat_id = ${row.ROWID}`)).map(v => v.handle_id);
+                const chatToMessage = yield db.all(`SELECT handle_id FROM chat_handle_join WHERE chat_id = ${row.ROWID}`);
+                const chatHandleMap = chatToMessage.map(v => v.handle_id);
                 for (let handleID of chatHandleMap) {
                     const handle = (yield db.get(`SELECT * FROM handle WHERE ROWID = ${handleID}`));
+                    const chatHandleJoin = (yield db.all(`SELECT * FROM chat_handle_join WHERE handle_id = ${handleID}`));
                     handles.push({
                         country: handle.country,
                         id: handle.ROWID,
                         name: handle.id,
-                        service: handle.service
+                        service: handle.service,
+                        conversationIds: chatHandleJoin.map(v => v.chat_id)
                     });
                 }
                 const chatMessageMap = (yield db.all(`SELECT message_id FROM chat_message_join WHERE chat_id = ${row.ROWID}`)).map(v => v.message_id);
@@ -65,6 +68,7 @@ class Chat {
                         dateSent: this.dbDateToDate(message.date_delivered),
                         date: this.dbDateToDate(message.date),
                         handle: handles.find(v => v.id == message.handle_id),
+                        conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
                         id: message.ROWID,
                         service: message.service,
                         text: message.text,
@@ -113,11 +117,13 @@ class Chat {
             const change = reverse ? -1 : 1;
             for (let handleIndex = startValue; (reverse ? handleIndex > endValue - 1 : handleIndex < endValue); handleIndex += change) {
                 let handle = tableHandles[handleIndex];
+                const chatHandleJoin = (yield db.all(`SELECT * FROM chat_handle_join WHERE handle_id = ${handleIndex}`));
                 handles.push({
                     country: handle.country,
                     name: handle.id,
                     id: handle.ROWID,
-                    service: handle.service
+                    service: handle.service,
+                    conversationIds: chatHandleJoin.map(v => v.chat_id)
                 });
             }
             return handles;
@@ -147,7 +153,8 @@ class Chat {
         return __awaiter(this, void 0, void 0, function* () {
             const db = this.db;
             const handles = yield this.getHandles();
-            const chatMessageMap = (yield db.all(`SELECT message_id FROM chat_message_join`)).map(v => v.message_id);
+            const chatToMessage = yield db.all(`SELECT message_id FROM chat_message_join`);
+            const chatMessageMap = chatToMessage.map(v => v.message_id);
             let messages = [];
             const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
             const startValue = reverse ? chatMessageMap.length - 1 : 0;
@@ -171,6 +178,7 @@ class Chat {
                     dateSent: this.dbDateToDate(message.date_delivered),
                     date: this.dbDateToDate(message.date),
                     handle: handles.find(v => v.id == message.handle_id),
+                    conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
                     id: message.ROWID,
                     service: message.service,
                     text: message.text,
