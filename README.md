@@ -69,8 +69,11 @@ const fs = require('fs');
 
 * [close](#close)
 * [dbDateToDate](#private-dbdatetodate)
+* [getConversationCount](#getconversationcount)
 * [getConversations](#getconversations)
+* [getHandleCount](#gethandlecount)
 * [getHandles](#gethandles)
+* [getMessageCount](#getmessagecount)
 * [getMessages](#getmessages)
 * [init](#init)
 * [parse](#parse)
@@ -81,7 +84,7 @@ const fs = require('fs');
 
 \+ **new Chat**(`path?`: string): *[Chat]()*
 
-*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L12)*
+*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L12)*
 
 **Parameters:**
 
@@ -97,7 +100,7 @@ Name | Type |
 
 • **db**: *DatabaseSqlite‹Database, Statement›*
 
-*Defined in [app.ts:11](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L11)*
+*Defined in [app.ts:11](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L11)*
 
 ___
 
@@ -105,7 +108,7 @@ ___
 
 • **json**: *Conversation[]*
 
-*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L12)*
+*Defined in [app.ts:12](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L12)*
 
 ___
 
@@ -113,7 +116,7 @@ ___
 
 • **path**: *string*
 
-*Defined in [app.ts:10](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L10)*
+*Defined in [app.ts:10](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L10)*
 
 ## Methods
 
@@ -121,7 +124,7 @@ ___
 
 ▸ **close**(): *Promise‹void›*
 
-*Defined in [app.ts:174](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L174)*
+*Defined in [app.ts:224](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L224)*
 
 **Returns:** *Promise‹void›*
 
@@ -131,7 +134,7 @@ ___
 
 ▸ **dbDateToDate**(`nano`: number): *Date*
 
-*Defined in [app.ts:178](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L178)*
+*Defined in [app.ts:228](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L228)*
 
 **Parameters:**
 
@@ -143,11 +146,21 @@ Name | Type |
 
 ___
 
+###  getConversationCount
+
+▸ **getConversationCount**(): *Promise‹any›*
+
+*Defined in [app.ts:212](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L212)*
+
+**Returns:** *Promise‹any›*
+
+___
+
 ###  getConversations
 
 ▸ **getConversations**(`max?`: number, `reverse?`: boolean): *Promise‹Conversation[]›*
 
-*Defined in [app.ts:111](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L111)*
+*Defined in [app.ts:130](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L130)*
 
 **Parameters:**
 
@@ -160,11 +173,21 @@ Name | Type |
 
 ___
 
+###  getHandleCount
+
+▸ **getHandleCount**(): *Promise‹any›*
+
+*Defined in [app.ts:216](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L216)*
+
+**Returns:** *Promise‹any›*
+
+___
+
 ###  getHandles
 
 ▸ **getHandles**(`max?`: number, `reverse?`: boolean): *Promise‹Handle[]›*
 
-*Defined in [app.ts:90](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L90)*
+*Defined in [app.ts:109](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L109)*
 
 **Parameters:**
 
@@ -177,11 +200,21 @@ Name | Type |
 
 ___
 
+###  getMessageCount
+
+▸ **getMessageCount**(): *Promise‹any›*
+
+*Defined in [app.ts:220](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L220)*
+
+**Returns:** *Promise‹any›*
+
+___
+
 ###  getMessages
 
 ▸ **getMessages**(`max?`: number, `reverse?`: boolean): *Promise‹Message[]›*
 
-*Defined in [app.ts:132](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L132)*
+*Defined in [app.ts:151](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L151)*
 
 **Parameters:**
 
@@ -198,7 +231,7 @@ ___
 
 ▸ **init**(): *Promise‹[Chat]()›*
 
-*Defined in [app.ts:19](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L19)*
+*Defined in [app.ts:19](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L19)*
 
 **Returns:** *Promise‹[Chat]()›*
 
@@ -208,6 +241,6 @@ ___
 
 ▸ **parse**(): *Promise‹Conversation[]›*
 
-*Defined in [app.ts:28](https://github.com/Zaedus/chatdb.js/blob/7f08eae/app.ts#L28)*
+*Defined in [app.ts:28](https://github.com/Zaedus/chatdb.js/blob/c1234aa/app.ts#L28)*
 
 **Returns:** *Promise‹Conversation[]›*
