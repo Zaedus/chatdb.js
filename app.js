@@ -113,6 +113,8 @@ class Chat {
             const db = this.db;
             const tableHandles = (yield db.all("SELECT * FROM handle"));
             let handles = [];
+            if (max > tableHandles.length)
+                throw new Error("'max' out of range.");
             const endValue = max ? reverse ? (tableHandles.length) - (max) : max : tableHandles.length;
             const startValue = reverse ? tableHandles.length - 1 : 0;
             const change = reverse ? -1 : 1;
@@ -135,6 +137,8 @@ class Chat {
             const db = this.db;
             const tableChats = (yield db.all("SELECT * FROM chat"));
             let chats = [];
+            if (max > tableChats.length)
+                throw new Error("'max' out of range.");
             const endValue = max ? reverse ? (tableChats.length) - (max) : max : tableChats.length;
             const startValue = reverse ? tableChats.length - 1 : 0;
             const change = reverse ? -1 : 1;
@@ -158,6 +162,8 @@ class Chat {
             const chatToMessage = yield db.all(`SELECT message_id FROM chat_message_join`);
             const chatMessageMap = chatToMessage.map(v => v.message_id);
             let messages = [];
+            if (max > chatMessageMap.length)
+                throw new Error("'max' out of range.");
             const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
             const startValue = reverse ? chatMessageMap.length - 1 : 0;
             const change = reverse ? -1 : 1;

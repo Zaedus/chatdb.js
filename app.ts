@@ -115,6 +115,8 @@ export class Chat {
         const tableHandles: HandleTableRow[] = (await db.all("SELECT * FROM handle"));
         let handles: Handle[] = [];
 
+        if (max > tableHandles.length) throw new Error("'max' out of range.");
+
         const endValue = max ? reverse ? (tableHandles.length) - (max) : max : tableHandles.length;
         const startValue = reverse ? tableHandles.length - 1 : 0;
         const change = reverse ? -1 : 1;
@@ -137,6 +139,8 @@ export class Chat {
         const db = this.db;
         const tableChats: ChatTableRow[] = (await db.all("SELECT * FROM chat"));
         let chats: Conversation[] = [];
+        
+        if (max > tableChats.length) throw new Error("'max' out of range.");
 
         const endValue = max ? reverse ? (tableChats.length) - (max) : max : tableChats.length;
         const startValue = reverse ? tableChats.length - 1 : 0;
@@ -162,6 +166,8 @@ export class Chat {
         const chatMessageMap = chatToMessage.map(v => v.message_id);
         let messages: Message[] = [];
 
+        if (max > chatMessageMap.length) throw new Error("'max' out of range.");
+        
         const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
         const startValue = reverse ? chatMessageMap.length - 1 : 0;
         const change = reverse ? -1 : 1;
