@@ -1,5 +1,5 @@
 # ChatDB.js
-[![NPM version](https://img.shields.io/npm/v/glitchapi.js?style=flat-square)](https://www.npmjs.com/package/chatdb.js)
+[![NPM version](https://img.shields.io/npm/v/chatdb.js?style=flat-square)](https://www.npmjs.com/package/chatdb.js)
 ![built with typescript](https://camo.githubusercontent.com/92e9f7b1209bab9e3e9cd8cdf62f072a624da461/68747470733a2f2f666c61742e62616467656e2e6e65742f62616467652f4275696c74253230576974682f547970655363726970742f626c7565) 
 [![](https://img.shields.io/badge/Give%20it%20a-star!-yellow?style=flat-square)](https://github.com/Zaedus/chatdb.js)
 > A library that parses the chat.db file on Macs 
