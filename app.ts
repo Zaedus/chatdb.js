@@ -139,7 +139,7 @@ export class Chat {
         const db = this.db;
         const tableChats: ChatTableRow[] = (await db.all("SELECT * FROM chat"));
         let chats: Conversation[] = [];
-        
+
         if (max > tableChats.length) throw new Error("'max' out of range.");
 
         const endValue = max ? reverse ? (tableChats.length) - (max) : max : tableChats.length;
@@ -160,74 +160,70 @@ export class Chat {
     }
 
     public async getMessages(max?: number, reverse?: boolean) {
-        try {
-            const db = this.db;
-            const handles = await this.getHandles();
-            const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id FROM chat_message_join`)
-            const chatMessageMap = chatToMessage.map(v => v.message_id);
-            let messages: Message[] = [];
-    
+        const db = this.db;
+        const handles = await this.getHandles();
+        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id FROM chat_message_join`)
+        const chatMessageMap = chatToMessage.map(v => v.message_id);
+        let messages: Message[] = [];
+        if (max) {
             if (max > await this.getMessageCount()) throw new Error("'max' out of range.");
-            
-            const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
-            const startValue = reverse ? chatMessageMap.length - 1 : 0;
-            const change = reverse ? -1 : 1;
-    
-            for (let messageIndex = startValue; (reverse ? messageIndex > endValue - 1 : messageIndex < endValue); messageIndex += change) {
-                const messageID = chatMessageMap[messageIndex];
-                if (!messageID) continue;
-                const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
-                const attachments: Attachment[] = [];
-                const message: MessageTableRow = (await db.all(`SELECT * FROM message WHERE ROWID = ${messageID}`))[0];
-    
-                for (let attachmentID of messageAttachmentMap) {
-                    const attachment: AttachmentTableRow = (await db.all(`SELECT * FROM attachment WHERE ROWID = ${attachmentID}`))[0];
-    
-                    attachments.push({
-                        filename: attachment.filename,
-                        id: attachment.ROWID,
-                        mime: attachment.mime_type,
-                        name: attachment.transfer_name,
-                        size: attachment.total_bytes
-                    });
-                }
-    
-                messages.push({
-                    dateSent: this.dbDateToDate(message.date_delivered),
-                    date: this.dbDateToDate(message.date),
-                    handle: handles.find(v => v.id == message.handle_id),
-                    conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
-                    id: message.ROWID,
-                    service: message.service,
-                    text: message.text,
-                    attachment: attachments,
-                    isSent: message.is_sent == 1 ? true : false,
-                    cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
-                    dataDetected: message.was_data_detected == 1 ? true : false,
-                    hasDDResults: message.has_dd_results == 1 ? true : false,
-                    isArchive: message.is_archive == 1 ? true : false,
-                    isAudioMessage: message.is_audio_message == 1 ? true : false,
-                    isAutoReply: message.is_auto_reply == 1 ? true : false,
-                    isDelayed: message.is_delayed == 1 ? true : false,
-                    isDelivered: message.is_delivered == 1 ? true : false,
-                    isEmote: message.is_emote == 1 ? true : false,
-                    isEmpty: message.is_empty == 1 ? true : false,
-                    isFinished: message.is_finished == 1 ? true : false,
-                    isForward: message.is_finished == 1 ? true : false,
-                    isFromMe: message.is_from_me == 1 ? true : false,
-                    isPrepared: message.is_prepared == 1 ? true : false,
-                    isRead: message.is_read == 1 ? true : false,
-                    isServiceMessage: message.is_service_message == 1 ? true : false,
-                    isSpam: message.is_spam == 1 ? true : false,
-                    isSystemMessage: message.is_system_message == 1 ? true : false,
-                    wasDowngraded: message.was_downgraded == 1 ? true : false
-                })
-            }
-            return messages;
-        } catch (e) {
-            console.log(new Error(e));
         }
-        
+
+        const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
+        const startValue = reverse ? chatMessageMap.length - 1 : 0;
+        const change = reverse ? -1 : 1;
+
+        for (let messageIndex = startValue; (reverse ? messageIndex > endValue - 1 : messageIndex < endValue); messageIndex += change) {
+            const messageID = chatMessageMap[messageIndex];
+            if (!messageID) continue;
+            const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
+            const attachments: Attachment[] = [];
+            const message: MessageTableRow = (await db.all(`SELECT * FROM message WHERE ROWID = ${messageID}`))[0];
+
+            for (let attachmentID of messageAttachmentMap) {
+                const attachment: AttachmentTableRow = (await db.all(`SELECT * FROM attachment WHERE ROWID = ${attachmentID}`))[0];
+
+                attachments.push({
+                    filename: attachment.filename,
+                    id: attachment.ROWID,
+                    mime: attachment.mime_type,
+                    name: attachment.transfer_name,
+                    size: attachment.total_bytes
+                });
+            }
+
+            messages.push({
+                dateSent: this.dbDateToDate(message.date_delivered),
+                date: this.dbDateToDate(message.date),
+                handle: handles.find(v => v.id == message.handle_id),
+                conversationId: chatToMessage.find(v => v.message_id == message.ROWID).chat_id,
+                id: message.ROWID,
+                service: message.service,
+                text: message.text,
+                attachment: attachments,
+                isSent: message.is_sent == 1 ? true : false,
+                cacheHasAttachments: message.cache_has_attachments == 1 ? true : false,
+                dataDetected: message.was_data_detected == 1 ? true : false,
+                hasDDResults: message.has_dd_results == 1 ? true : false,
+                isArchive: message.is_archive == 1 ? true : false,
+                isAudioMessage: message.is_audio_message == 1 ? true : false,
+                isAutoReply: message.is_auto_reply == 1 ? true : false,
+                isDelayed: message.is_delayed == 1 ? true : false,
+                isDelivered: message.is_delivered == 1 ? true : false,
+                isEmote: message.is_emote == 1 ? true : false,
+                isEmpty: message.is_empty == 1 ? true : false,
+                isFinished: message.is_finished == 1 ? true : false,
+                isForward: message.is_finished == 1 ? true : false,
+                isFromMe: message.is_from_me == 1 ? true : false,
+                isPrepared: message.is_prepared == 1 ? true : false,
+                isRead: message.is_read == 1 ? true : false,
+                isServiceMessage: message.is_service_message == 1 ? true : false,
+                isSpam: message.is_spam == 1 ? true : false,
+                isSystemMessage: message.is_system_message == 1 ? true : false,
+                wasDowngraded: message.was_downgraded == 1 ? true : false
+            })
+        }
+        return messages;
     }
 
     public async getConversationCount() {
@@ -244,7 +240,7 @@ export class Chat {
         } catch (e) {
             console.error(new Error(e));
         }
-        
+
     }
 
     public close() {
