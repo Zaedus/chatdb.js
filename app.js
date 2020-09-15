@@ -159,7 +159,7 @@ class Chat {
         return __awaiter(this, void 0, void 0, function* () {
             const db = this.db;
             const handles = yield this.getHandles();
-            const chatToMessage = yield db.all(`SELECT message_id FROM chat_message_join`);
+            const chatToMessage = yield db.all(`SELECT message_id, chat_id FROM chat_message_join`);
             const chatMessageMap = chatToMessage.map(v => v.message_id);
             let messages = [];
             if (max) {
@@ -237,7 +237,7 @@ class Chat {
                 return (yield this.db.get("SELECT COUNT(*) FROM message"))['COUNT(*)'];
             }
             catch (e) {
-                console.error(new Error(e));
+                throw new Error(e);
             }
         });
     }

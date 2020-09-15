@@ -162,7 +162,7 @@ export class Chat {
     public async getMessages(max?: number, reverse?: boolean) {
         const db = this.db;
         const handles = await this.getHandles();
-        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id FROM chat_message_join`)
+        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id, chat_id FROM chat_message_join`)
         const chatMessageMap = chatToMessage.map(v => v.message_id);
         let messages: Message[] = [];
         if (max) {
@@ -239,7 +239,7 @@ export class Chat {
         try {
             return (await this.db.get("SELECT COUNT(*) FROM message"))['COUNT(*)'];
         } catch (e) {
-            console.error(new Error(e));
+            throw new Error(e);
         }
 
     }
