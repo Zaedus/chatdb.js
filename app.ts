@@ -166,7 +166,7 @@ export class Chat {
         const chatMessageMap = chatToMessage.map(v => v.message_id);
         let messages: Message[] = [];
 
-        if (max > chatMessageMap.length) throw new Error("'max' out of range.");
+        if (max > await this.getMessageCount()) throw new Error("'max' out of range.");
         
         const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
         const startValue = reverse ? chatMessageMap.length - 1 : 0;

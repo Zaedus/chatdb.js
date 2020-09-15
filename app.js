@@ -162,7 +162,7 @@ class Chat {
             const chatToMessage = yield db.all(`SELECT message_id FROM chat_message_join`);
             const chatMessageMap = chatToMessage.map(v => v.message_id);
             let messages = [];
-            if (max > chatMessageMap.length)
+            if (max > (yield this.getMessageCount()))
                 throw new Error("'max' out of range.");
             const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
             const startValue = reverse ? chatMessageMap.length - 1 : 0;
