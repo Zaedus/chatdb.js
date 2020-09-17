@@ -162,20 +162,23 @@ export class Chat {
     public async getMessages(max?: number, reverse?: boolean) {
         const db = this.db;
         const handles = await this.getHandles();
-        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id, chat_id FROM chat_message_join`)
+        const chatToMessage: ChatMessageJoinTable[] = await db.all(`SELECT message_id, chat_id FROM chat_message_join ORDER BY message_id ASC`)
         const chatMessageMap = chatToMessage.map(v => v.message_id);
         let messages: Message[] = [];
+        const total = await this.getMessageCount();
         if (max) {
-            const total = await this.getMessageCount();
             if (max > total) max = total;
         }
 
-        const endValue = max ? reverse ? (chatMessageMap.length) - (max) : max : chatMessageMap.length;
-        const startValue = reverse ? chatMessageMap.length - 1 : 0;
+        const endValue = max ? reverse ? (chatMessageMap.length - 1) - (max) : max : chatMessageMap.length;
+        const startValue = reverse ? chatMessageMap.length : 0;
         const change = reverse ? -1 : 1;
 
-        for (let messageIndex = startValue; (reverse ? messageIndex > endValue - 1 : messageIndex < endValue); messageIndex += change) {
+        console.log({endValue, startValue, change})
+
+        for (let messageIndex = startValue; (reverse ? messageIndex > endValue : messageIndex < endValue); messageIndex += change) {
             const messageID = chatMessageMap[messageIndex];
+            console.log(messageIndex)
             if (!messageID) continue;
             const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
             const attachments: Attachment[] = [];
