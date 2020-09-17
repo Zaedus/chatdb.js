@@ -174,11 +174,8 @@ export class Chat {
         const startValue = reverse ? chatMessageMap.length : 0;
         const change = reverse ? -1 : 1;
 
-        console.log({endValue, startValue, change})
-
         for (let messageIndex = startValue; (reverse ? messageIndex > endValue : messageIndex < endValue); messageIndex += change) {
             const messageID = chatMessageMap[messageIndex];
-            console.log(messageIndex)
             if (!messageID) continue;
             const messageAttachmentMap = (await db.all(`SELECT attachment_id FROM message_attachment_join WHERE message_id = ${messageID}`)).map(v => v.attachment_id);
             const attachments: Attachment[] = [];
